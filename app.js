@@ -24,7 +24,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 // Connect to database
-connect();
+connect().catch(err => {
+    console.error('Failed to connect to database:', err);
+});
 
 // Routes
 app.use('/', indexRouter);
@@ -32,32 +34,31 @@ app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+    res.status(404).json({
+        error: {
+            message: 'Not Found',
+            status: 404
+        }
+    });
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  console.error(err.stack);
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.json({
-    error: {
-      message: err.message,
-      status: err.status || 500
-    }
-  });
+    console.error(err.stack);
+    res.status(err.status || 500).json({
+        error: {
+            message: err.message,
+            status: err.status || 500
+        }
+    });
 });
 
 // Only start the server if this file is run directly
 if (require.main === module) {
-  const port = process.env.PORT || 3000;
-  app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-  });
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
 }
 
 module.exports = app;
