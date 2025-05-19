@@ -22,5 +22,8 @@
     "nodemailer": "^6.10.1",
     "nodemon": "^3.1.9",
     "p9": "file:"
+  },
+  "devDependencies": {
+    "uglify-js": "^3.19.3"
   }
 }
