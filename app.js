@@ -28,6 +28,11 @@ connect().catch(err => {
     console.error('Failed to connect to database:', err);
 });
 
+// Root route handler
+app.get('/', (req, res) => {
+    res.json({ message: 'Welcome to Demo API !!' });
+});
+
 // Routes
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);

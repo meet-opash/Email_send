@@ -17,6 +17,12 @@ module.exports = async (req, res) => {
         return;
     }
 
+    // Add request path to the URL
+    req.url = req.url || '/';
+    if (!req.url.startsWith('/')) {
+        req.url = '/' + req.url;
+    }
+
     // Handle the request
     return app(req, res);
 }; 
